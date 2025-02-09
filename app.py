@@ -6,11 +6,12 @@ import matplotlib.font_manager as fm
 import requests
 from io import BytesIO
 
-# フォントの設定
-font_dir = ['streamlit_app/Noto_Sans_JP']
-for font in fm.findSystemFonts(font_dir):
-    fm.fontManager.addfont(font)
-plt.rcParams['font.family'] = 'Noto Sans JP'
+# Webからフォントをダウンロードして設定
+font_url = "https://github.com/google/fonts/raw/main/ofl/notosansjp/NotoSansJP-Regular.otf"
+response = requests.get(font_url)
+font_path = BytesIO(response.content)
+font_prop = fm.FontProperties(fname=font_path)
+plt.rcParams['font.family'] = font_prop.get_name()
 
 st.title("株価比較ツール")
 
@@ -53,7 +54,7 @@ if stock_codes:
 
             # チャートを表示
             plt.figure(figsize=(10, 6))
-            plt.plot(df['Close'], label='終値', linewidth=2)  # 終値の線を太く
+            plt.plot(df['Close'], label='終値', linewidth=4)  # 終値の線を太く
             plt.plot(df['SMA5'], label='5日移動平均線', linestyle='--')
             plt.plot(df['BB_upper'], label='ボリンジャーバンド (上限)', linestyle='--', color='red')
             plt.plot(df['BB_lower'], label='ボリンジャーバンド (下限)', linestyle='--', color='blue')
@@ -68,8 +69,8 @@ if stock_codes:
             plt.scatter(df.index[df['Cumulative_Neg'] <= -10 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -10 * df['SMA5']], color='purple', label='積算 < -10倍 SMA5', marker='x')
 
             # 比較開始日と終了日の株価で水平線を引く
-            plt.axhline(y=price_two_months_ago, color='green', linestyle='--', label='開始日の株価')
-            plt.axhline(y=current_price, color='purple', linestyle='--', label='終了日の株価')
+            plt.axhline(y=price_two_months_ago, color='green', linewidth=0.5, label='開始日の株価')
+            plt.axhline(y=current_price, color='purple', linewidth=0.5, label='終了日の株価')
 
             plt.title(f"{stock_code} 株価チャート")
             plt.legend()
