@@ -44,19 +44,19 @@ if stock_codes:
 
             # チャートを表示
             plt.figure(figsize=(10, 6))
-            plt.plot(df['Close'], label='Close Price')
-            plt.plot(df['SMA5'], label='5-day SMA', linestyle='--')
-            plt.plot(df['BB_upper'], label='Bollinger Band (Upper)', linestyle='--', color='red')
-            plt.plot(df['BB_lower'], label='Bollinger Band (Lower)', linestyle='--', color='blue')
+            plt.plot(df['Close'], label='終値', linewidth=2)  # 終値の線を太く
+            plt.plot(df['SMA5'], label='5日移動平均線', linestyle='--')
+            plt.plot(df['BB_upper'], label='ボリンジャーバンド (上限)', linestyle='--', color='red')
+            plt.plot(df['BB_lower'], label='ボリンジャーバンド (下限)', linestyle='--', color='blue')
             plt.fill_between(df.index, df['BB_upper'], df['BB_lower'], color='gray', alpha=0.1)
 
             # 終値がボリンジャーバンドを超えた日を強調
-            plt.scatter(df.index[df['Close'] > df['BB_upper']], df['Close'][df['Close'] > df['BB_upper']], color='red', label='Above BB', marker='^')
-            plt.scatter(df.index[df['Close'] < df['BB_lower']], df['Close'][df['Close'] < df['BB_lower']], color='blue', label='Below BB', marker='v')
+            plt.scatter(df.index[df['Close'] > df['BB_upper']], df['Close'][df['Close'] > df['BB_upper']], color='red', label='ボリンジャーバンド超え', marker='^')
+            plt.scatter(df.index[df['Close'] < df['BB_lower']], df['Close'][df['Close'] < df['BB_lower']], color='blue', label='ボリンジャーバンド下回り', marker='v')
 
             # 積算が10倍に達した日を強調
-            plt.scatter(df.index[df['Cumulative_Pos'] >= 10 * df['SMA5']], df['Close'][df['Cumulative_Pos'] >= 10 * df['SMA5']], color='orange', label='Cumulative Pos > 10x SMA5', marker='o')
-            plt.scatter(df.index[df['Cumulative_Neg'] <= -10 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -10 * df['SMA5']], color='purple', label='Cumulative Neg < -10x SMA5', marker='x')
+            plt.scatter(df.index[df['Cumulative_Pos'] >= 10 * df['SMA5']], df['Close'][df['Cumulative_Pos'] >= 10 * df['SMA5']], color='orange', label='積算 > 10倍 SMA5', marker='o')
+            plt.scatter(df.index[df['Cumulative_Neg'] <= -10 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -10 * df['SMA5']], color='purple', label='積算 < -10倍 SMA5', marker='x')
 
             plt.title(f"{stock_code} 株価チャート")
             plt.legend()
