@@ -4,12 +4,18 @@ import datetime
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import requests
-from io import BytesIO
+import tempfile
 
 # Webからフォントをダウンロードして設定
 font_url = "https://github.com/google/fonts/raw/main/ofl/notosansjp/NotoSansJP-Regular.otf"
 response = requests.get(font_url)
-font_path = BytesIO(response.content)
+
+# 一時ファイルにフォントを保存
+with tempfile.NamedTemporaryFile(delete=False, suffix=".otf") as tmp_font_file:
+    tmp_font_file.write(response.content)
+    font_path = tmp_font_file.name
+
+# フォントプロパティを設定
 font_prop = fm.FontProperties(fname=font_path)
 plt.rcParams['font.family'] = font_prop.get_name()
 
