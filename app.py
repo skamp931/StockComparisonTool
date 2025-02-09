@@ -37,8 +37,8 @@ if stock_codes:
 
             # 5日移動平均線とボリンジャーバンドを計算
             df['SMA5'] = df['Close'].rolling(window=5).mean()
-            df['BB_upper'] = df['SMA5'] + 2 * df['Close'].rolling(window=5).std()
-            df['BB_lower'] = df['SMA5'] - 2 * df['Close'].rolling(window=5).std()
+            df['BB_upper'] = df['SMA5'] + 1.5 * df['Close'].rolling(window=5).std()
+            df['BB_lower'] = df['SMA5'] - 1.5 * df['Close'].rolling(window=5).std()
 
             # 差分を計算し、積算
             df['Diff'] = df['Close'] - df['SMA5']
@@ -58,8 +58,8 @@ if stock_codes:
             plt.scatter(df.index[df['Close'] < df['BB_lower']], df['Close'][df['Close'] < df['BB_lower']], color='blue', label='ボリンジャーバンド下回り', marker='v')
 
             # 積算が10倍に達した日を強調
-            plt.scatter(df.index[df['Cumulative_Pos'] >= 10 * df['SMA5']], df['Close'][df['Cumulative_Pos'] >= 10 * df['SMA5']], color='orange', label='積算 > 10倍 SMA5', marker='o')
-            plt.scatter(df.index[df['Cumulative_Neg'] <= -10 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -10 * df['SMA5']], color='purple', label='積算 < -10倍 SMA5', marker='x')
+            plt.scatter(df.index[df['Cumulative_Pos'] >= 5 * df['SMA5']], df['Close'][df['Cumulative_Pos'] >= 5 * df['SMA5']], color='orange', label='積算 > 5倍 SMA5', marker='o')
+            plt.scatter(df.index[df['Cumulative_Neg'] <= -5 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -5 * df['SMA5']], color='purple', label='積算 < -5倍 SMA5', marker='x')
 
             # 比較開始日と終了日の株価で水平線を引く
             plt.axhline(y=price_two_months_ago, color='green', linewidth=0.5, label='開始日の株価')
