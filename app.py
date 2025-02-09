@@ -8,8 +8,8 @@ st.title("株価比較ツール")
 # 複数の銘柄コードを入力
 stock_codes = st.text_area("銘柄コードを入力してください（例: 7203, 6758）", height=100)
 
-# 現在の日付を取得
-today = datetime.datetime.now()
+# 現在の日付を選択
+today = st.date_input("比較終了日を選択してください", datetime.datetime.now())
 
 # 2ヶ月前の日付を選択
 two_months_ago = st.date_input("比較開始日を選択してください", today - datetime.timedelta(weeks=8))
@@ -32,7 +32,34 @@ if stock_codes:
             st.write(f"現在の株価: {current_price}円")
             st.write(f"変化率: {((current_price - price_two_months_ago) / price_two_months_ago) * 100:.2f}%")
 
+            # 5日移動平均線とボリンジャーバンドを計算
+            df['SMA5'] = df['Close'].rolling(window=5).mean()
+            df['BB_upper'] = df['SMA5'] + 2 * df['Close'].rolling(window=5).std()
+            df['BB_lower'] = df['SMA5'] - 2 * df['Close'].rolling(window=5).std()
+
+            # 差分を計算し、積算
+            df['Diff'] = df['Close'] - df['SMA5']
+            df['Cumulative_Pos'] = df['Diff'].clip(lower=0).cumsum()
+            df['Cumulative_Neg'] = df['Diff'].clip(upper=0).cumsum()
+
             # チャートを表示
-            st.line_chart(df['Close'])
+            plt.figure(figsize=(10, 6))
+            plt.plot(df['Close'], label='Close Price')
+            plt.plot(df['SMA5'], label='5-day SMA', linestyle='--')
+            plt.plot(df['BB_upper'], label='Bollinger Band (Upper)', linestyle='--', color='red')
+            plt.plot(df['BB_lower'], label='Bollinger Band (Lower)', linestyle='--', color='blue')
+            plt.fill_between(df.index, df['BB_upper'], df['BB_lower'], color='gray', alpha=0.1)
+
+            # 終値がボリンジャーバンドを超えた日を強調
+            plt.scatter(df.index[df['Close'] > df['BB_upper']], df['Close'][df['Close'] > df['BB_upper']], color='red', label='Above BB', marker='^')
+            plt.scatter(df.index[df['Close'] < df['BB_lower']], df['Close'][df['Close'] < df['BB_lower']], color='blue', label='Below BB', marker='v')
+
+            # 積算が10倍に達した日を強調
+            plt.scatter(df.index[df['Cumulative_Pos'] >= 10 * df['SMA5']], df['Close'][df['Cumulative_Pos'] >= 10 * df['SMA5']], color='orange', label='Cumulative Pos > 10x SMA5', marker='o')
+            plt.scatter(df.index[df['Cumulative_Neg'] <= -10 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -10 * df['SMA5']], color='purple', label='Cumulative Neg < -10x SMA5', marker='x')
+
+            plt.title(f"{stock_code} 株価チャート")
+            plt.legend()
+            st.pyplot(plt)
         else:
             st.write(f"データが見つかりませんでした。銘柄コードを確認してください: {stock_code}")
