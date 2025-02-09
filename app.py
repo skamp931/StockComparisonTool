@@ -4,7 +4,7 @@ import datetime
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import os
-import japanize-matplotlib
+import japanize_matplotlib
 
 st.title("株価比較ツール")
 
