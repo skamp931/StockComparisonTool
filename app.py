@@ -47,7 +47,7 @@ if stock_codes:
 
             # チャートを表示
             plt.figure(figsize=(10, 6))
-            plt.plot(df['Close'], label='終値', linewidth=2)  # 終値の線を太く
+            plt.plot(df['Close'], label='終値', linewidth=4)  # 終値の線を太く
             plt.plot(df['SMA5'], label='5日移動平均線', linestyle='--')
             plt.plot(df['BB_upper'], label='ボリンジャーバンド (上限)', linestyle='--', color='red')
             plt.plot(df['BB_lower'], label='ボリンジャーバンド (下限)', linestyle='--', color='blue')
@@ -62,8 +62,8 @@ if stock_codes:
             plt.scatter(df.index[df['Cumulative_Neg'] <= -10 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -10 * df['SMA5']], color='purple', label='積算 < -10倍 SMA5', marker='x')
 
             # 比較開始日と終了日の株価で水平線を引く
-            plt.axhline(y=price_two_months_ago, color='green', linestyle='--', label='開始日の株価')
-            plt.axhline(y=current_price, color='purple', linestyle='--', label='終了日の株価')
+            plt.axhline(y=price_two_months_ago, color='green', linewidth=0.5, label='開始日の株価')
+            plt.axhline(y=current_price, color='purple', linewidth=0.5, label='終了日の株価')
 
             plt.title(f"{stock_code} 株価チャート")
             plt.legend()
