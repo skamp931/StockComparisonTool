@@ -49,17 +49,17 @@ if stock_codes:
             plt.figure(figsize=(10, 6))
             plt.plot(df['Close'], label='終値', linewidth=4)  # 終値の線を太く
             plt.plot(df['SMA5'], label='5日移動平均線', linestyle='--')
-            plt.plot(df['BB_upper'], label='ボリンジャーバンド (上限)', linestyle='--', color='red')
-            plt.plot(df['BB_lower'], label='ボリンジャーバンド (下限)', linestyle='--', color='blue')
+            plt.plot(df['BB_upper'], label='判定バンド (上限)', linestyle='--', color='red')
+            plt.plot(df['BB_lower'], label='判定バンド (下限)', linestyle='--', color='blue')
             plt.fill_between(df.index, df['BB_upper'], df['BB_lower'], color='gray', alpha=0.1)
 
             # 終値がボリンジャーバンドを超えた日を強調
-            plt.scatter(df.index[df['Close'] > df['BB_upper']], df['Close'][df['Close'] > df['BB_upper']], color='red', label='ボリンジャーバンド超え', marker='^')
-            plt.scatter(df.index[df['Close'] < df['BB_lower']], df['Close'][df['Close'] < df['BB_lower']], color='blue', label='ボリンジャーバンド下回り', marker='v')
+            plt.scatter(df.index[df['Close'] > df['BB_upper']], df['Close'][df['Close'] > df['BB_upper']], color='red', label='ボリンジャーバンド超え', marker='^',s=100, zorder=3)
+            plt.scatter(df.index[df['Close'] < df['BB_lower']], df['Close'][df['Close'] < df['BB_lower']], color='blue', label='ボリンジャーバンド下回り', marker='v',s=100, zorder=3)
 
             # 積算が10倍に達した日を強調
-            plt.scatter(df.index[df['Cumulative_Pos'] >= 5 * df['SMA5']], df['Close'][df['Cumulative_Pos'] >= 5 * df['SMA5']], color='orange', label='積算 > 5倍 SMA5', marker='o')
-            plt.scatter(df.index[df['Cumulative_Neg'] <= -5 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -5 * df['SMA5']], color='purple', label='積算 < -5倍 SMA5', marker='x')
+            plt.scatter(df.index[df['Cumulative_Pos'] >= 5 * df['SMA5']], df['Close'][df['Cumulative_Pos'] >= 5 * df['SMA5']], color='orange', label='積算 > 5倍 SMA5', marker='o',s=100, zorder=3)
+            plt.scatter(df.index[df['Cumulative_Neg'] <= -5 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -5 * df['SMA5']], color='purple', label='積算 < -5倍 SMA5', marker='x',s=100, zorder=3)
 
             # 比較開始日と終了日の株価で水平線を引く
             plt.axhline(y=price_two_months_ago, color='green', linewidth=0.5, label='開始日の株価')
