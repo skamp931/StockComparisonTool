@@ -2,6 +2,16 @@ import streamlit as st
 import yfinance as yf
 import datetime
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+import requests
+from io import BytesIO
+
+# Webからフォントをダウンロードして設定
+font_url = "https://github.com/google/fonts/raw/main/ofl/notosansjp/NotoSansJP-Regular.otf"
+response = requests.get(font_url)
+font_path = BytesIO(response.content)
+font_prop = fm.FontProperties(fname=font_path)
+plt.rcParams['font.family'] = font_prop.get_name()
 
 st.title("株価比較ツール")
 
@@ -57,6 +67,10 @@ if stock_codes:
             # 積算が10倍に達した日を強調
             plt.scatter(df.index[df['Cumulative_Pos'] >= 10 * df['SMA5']], df['Close'][df['Cumulative_Pos'] >= 10 * df['SMA5']], color='orange', label='積算 > 10倍 SMA5', marker='o')
             plt.scatter(df.index[df['Cumulative_Neg'] <= -10 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -10 * df['SMA5']], color='purple', label='積算 < -10倍 SMA5', marker='x')
+
+            # 比較開始日と終了日の株価で水平線を引く
+            plt.axhline(y=price_two_months_ago, color='green', linestyle='--', label='開始日の株価')
+            plt.axhline(y=current_price, color='purple', linestyle='--', label='終了日の株価')
 
             plt.title(f"{stock_code} 株価チャート")
             plt.legend()
