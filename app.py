@@ -7,7 +7,7 @@ import requests
 import tempfile
 
 # Webからフォントをダウンロードして設定
-font_url = "https://github.com/google/fonts/raw/main/ofl/notosansjp/NotoSansJP-Regular.otf"
+font_url = "https://github.com/ixkaito/NotoSansJP-subset/raw/master/fonts/NotoSansJP-Regular.otf"
 response = requests.get(font_url)
 
 # ダウンロードが成功したか確認
