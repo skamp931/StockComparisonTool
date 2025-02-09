@@ -17,7 +17,6 @@ with tempfile.NamedTemporaryFile(delete=False, suffix=".otf") as tmp_font_file:
 
 # フォントプロパティを設定
 font_prop = fm.FontProperties(fname=font_path)
-plt.rcParams['font.family'] = font_prop.get_name()
 
 st.title("株価比較ツール")
 
@@ -75,11 +74,11 @@ if stock_codes:
             plt.scatter(df.index[df['Cumulative_Neg'] <= -10 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -10 * df['SMA5']], color='purple', label='積算 < -10倍 SMA5', marker='x')
 
             # 比較開始日と終了日の株価で水平線を引く
-            plt.axhline(y=price_two_months_ago, color='green', linewidth=0.5, label='開始日の株価')
-            plt.axhline(y=current_price, color='purple', linewidth=0.5, label='終了日の株価')
+            plt.axhline(y=price_two_months_ago, color='green', linestyle='--', label='開始日の株価')
+            plt.axhline(y=current_price, color='purple', linestyle='--', label='終了日の株価')
 
-            plt.title(f"{stock_code} 株価チャート")
-            plt.legend()
+            plt.title(f"{stock_code} 株価チャート", fontproperties=font_prop)
+            plt.legend(prop=font_prop)
             st.pyplot(plt)
         else:
             st.write(f"データが見つかりませんでした。銘柄コードを確認してください: {stock_code}")
