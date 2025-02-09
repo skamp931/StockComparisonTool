@@ -66,7 +66,7 @@ if stock_codes:
             plt.axhline(y=current_price, color='purple', linewidth=0.5, label='終了日の株価')
 
             plt.title(f"{stock_code} 株価チャート")
-            plt.legend()
+            plt.legend(loc='upper left')  # 位置を左上に設定
             st.pyplot(plt)
         else:
             st.write(f"データが見つかりませんでした。銘柄コードを確認してください: {stock_code}")
