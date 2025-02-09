@@ -58,8 +58,8 @@ if stock_codes:
             plt.scatter(df.index[df['Close'] < df['BB_lower']], df['Close'][df['Close'] < df['BB_lower']], color='blue', label='判定バンド下回り', marker='v',s=100, zorder=3)
 
             # 積算が10倍に達した日を強調
-            plt.scatter(df.index[df['Cumulative_Pos'] >= 1 * df['SMA5']], df['Close'][df['Cumulative_Pos'] >= 1 * df['SMA5']], color='orange', label='積算 > 1倍 SMA5', marker='o',s=100, zorder=3)
-            plt.scatter(df.index[df['Cumulative_Neg'] <= -1 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -1 * df['SMA5']], color='purple', label='積算 < -1倍 SMA5', marker='x',s=100, zorder=3)
+            plt.scatter(df.index[df['Cumulative_Pos'] >= 1.5 * df['SMA5']], df['Close'][df['Cumulative_Pos'] >= 1.5 * df['SMA5']], color='orange', label='積算 > 1.5倍 SMA5', marker='o',s=100, zorder=3)
+            plt.scatter(df.index[df['Cumulative_Neg'] <= -1.5 * df['SMA5']], df['Close'][df['Cumulative_Neg'] <= -1.5 * df['SMA5']], color='purple', label='積算 < -1.5倍 SMA5', marker='x',s=100, zorder=3)
 
             # 比較開始日と終了日の株価で水平線を引く
             plt.axhline(y=price_two_months_ago, color='green', linewidth=0.5, label='開始日の株価')
