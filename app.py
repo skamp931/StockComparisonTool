@@ -5,13 +5,14 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import requests
 from io import BytesIO
+import japanize_matplotlib
 
 # Webからフォントをダウンロードして設定
-font_url = "https://github.com/google/fonts/raw/main/ofl/notosansjp/NotoSansJP-Regular.otf"
-response = requests.get(font_url)
-font_path = BytesIO(response.content)
-font_prop = fm.FontProperties(fname=font_path)
-plt.rcParams['font.family'] = font_prop.get_name()
+#font_url = "https://github.com/google/fonts/raw/main/ofl/notosansjp/NotoSansJP-Regular.otf"
+#response = requests.get(font_url)
+#font_path = BytesIO(response.content)
+#font_prop = fm.FontProperties(fname=font_path)
+#plt.rcParams['font.family'] = font_prop.get_name()
 
 st.title("株価比較ツール")
 
