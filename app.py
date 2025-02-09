@@ -7,12 +7,11 @@ import requests
 from io import BytesIO
 import japanize_matplotlib
 
-# Webからフォントをダウンロードして設定
-#font_url = "https://github.com/google/fonts/raw/main/ofl/notosansjp/NotoSansJP-Regular.otf"
-#response = requests.get(font_url)
-#font_path = BytesIO(response.content)
-#font_prop = fm.FontProperties(fname=font_path)
-#plt.rcParams['font.family'] = font_prop.get_name()
+# フォントの設定
+font_dir = ['streamlit_app/Noto_Sans_JP']
+for font in fm.findSystemFonts(font_dir):
+    fm.fontManager.addfont(font)
+plt.rcParams['font.family'] = 'Noto Sans JP'
 
 st.title("株価比較ツール")
 
