@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import requests
 from io import BytesIO
-import japanize_matplotlib
 
 # フォントの設定
 font_dir = ['streamlit_app/Noto_Sans_JP']
